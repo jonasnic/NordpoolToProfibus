@@ -16,6 +16,7 @@ String server = "nordpoolveas.jonaspettersen.no"; // name address for Google (us
 
 EthernetClient client;
 NordPool NP;
+#define UPDATEPRICEINTERVALL 15000
 
 void setup()
 {
@@ -28,12 +29,14 @@ void setup()
 void loop()
 {
 
-    static int i =0;
-    Serial.println(i++);
+    static unsigned long updateTimer = 0;
+    if (millis() > updateTimer + UPDATEPRICEINTERVALL)
+    {
+        updateTimer = millis();
+        NP.update();
+        NP.print();
+    }
 
-    NP.update();
-    NP.print();
-    delay(15000);
     ////////////////////
     ////// DEBUG //////
     //////////////////
